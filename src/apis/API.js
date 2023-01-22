@@ -22,15 +22,33 @@ function API() {
             id: 1,
             product_id: 1,
             link: 'https://www.mercadolibre.com.ar/mampara-bano-vidrio-templado-6mm-80x80x195-cm-azul/p/MLA18210050',
-            price: 55000,
-            date: '2021-10-01',
+            title : 'Mampara baño vidrio templado 6mm 80x80x195 cm azul',
+            prices : [
+                {
+                    date: '2021-10-01',
+                    price: 55000,
+                },
+                {
+                    date: '2021-10-02',
+                    price: 55000,
+                },
+            ]
         },
         {
             id: 2,
             product_id: 1,
             link: 'https://www.mercadolibre.com.ar/mampara-bano-vidrio-templado-6mm-80x80x195-cm-azul/p/MLA18210050',
-            price: 60000,
-            date: '2021-10-02',
+            title : 'Otra mampara más cara',
+            prices : [
+                {
+                    date: '2021-10-01',
+                    price: 75000,
+                },
+                {
+                    date: '2021-10-02',
+                    price: 78000,
+                },
+            ]
         },
     ];
     this.getProducts = () => {

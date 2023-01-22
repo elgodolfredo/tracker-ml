@@ -11,6 +11,7 @@ function App() {
 
   const [products, setProducts] = useState([]);
   const [addProductDialogIsOpen, setAddProductDialogIsOpen] = useState(false);
+  const [addProductLinkDialogIsOpen, setAddProductLinkDialogIsOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
@@ -23,6 +24,9 @@ function App() {
     setSelectedProduct(product);
   }
 
+  const addProductLinkToSelectedProduct = (product) => {
+    setAddProductLinkDialogIsOpen(false);
+  }
 
   return (
     <div className="App">
@@ -31,7 +35,7 @@ function App() {
         <Grid item xs={4}>
             {products.map((product) => (
               <Box key={product.id}>
-                <Product product={product} onClick={handleProductClick} />
+                <Product product={product} onClick={()=> handleProductClick(product) } />
               </Box>
             ))}
             <Box sx={{marginTop: '10px', marginLeft: '20px'}}>
@@ -55,6 +59,21 @@ function App() {
         <Grid item xs={8}>
           {selectedProduct && <Typography variant="h4">Detalles del producto</Typography>}
           {selectedProduct && <ProductDetail product={selectedProduct} />}
+          {selectedProduct && <Button variant="contained" size="medium" startIcon={<AddCircleOutlined />} onClick={()=>{ setAddProductLinkDialogIsOpen(true) }} >Agregar link</Button>}
+          <FormDialog 
+            open={addProductLinkDialogIsOpen}
+            title="Agregar link"
+            onClose={()=>{ setAddProductLinkDialogIsOpen(false) }}
+            onConfirm={()=>{ addProductLinkToSelectedProduct(selectedProduct) }}>
+              <TextField
+                autoFocus
+                margin="dense"
+                id="link"
+                label="link"
+                type="text"
+                fullWidth
+              />
+          </FormDialog>
         </Grid>
       </Grid>
     </div>
