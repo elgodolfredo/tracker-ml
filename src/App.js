@@ -2,11 +2,16 @@ import './App.css';
 import { Product } from './components/Product';
 import { useEffect, useState } from 'react';
 import API from './apis/API'; 
-import { Typography } from '@mui/material';
+import FormDialog from './components/FormDialog';
+import { Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { AddCircleOutlined } from '@mui/icons-material';
+import { ProductDetail } from './components/ProductDetail';
 
 function App() {
 
   const [products, setProducts] = useState([]);
+  const [addProductDialogIsOpen, setAddProductDialogIsOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     API.getProducts().then((products) => {
@@ -14,14 +19,44 @@ function App() {
     });
   }, []);
 
+  const handleProductClick = (product) => {
+    setSelectedProduct(product);
+  }
+
+
   return (
     <div className="App">
-      <Typography variant="h4">Products</Typography>
-          {products.map((product) => (
-            <div key={product.id}>
-              <Product product={product} />
-            </div>
-          ))}
+      <Typography variant="h4">Productos</Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={4}>
+            {products.map((product) => (
+              <Box key={product.id}>
+                <Product product={product} onClick={handleProductClick} />
+              </Box>
+            ))}
+            <Box sx={{marginTop: '10px', marginLeft: '20px'}}>
+              <Button variant="contained" size="medium" startIcon={<AddCircleOutlined />} onClick={()=>{ setAddProductDialogIsOpen(true) }} >Agregar producto</Button>
+            </Box>
+            <FormDialog 
+              open={addProductDialogIsOpen}
+              title="Agregar producto"
+              onClose={()=>{ setAddProductDialogIsOpen(false) }}
+              onConfirm={()=>{ setAddProductDialogIsOpen(false) }}>
+                <TextField
+                  autoFocus
+                  margin="dense"
+                  id="name"
+                  label="Nombre"
+                  type="text"
+                  fullWidth
+                />
+              </FormDialog>
+        </Grid>
+        <Grid item xs={8}>
+          {selectedProduct && <Typography variant="h4">Detalles del producto</Typography>}
+          {selectedProduct && <ProductDetail product={selectedProduct} />}
+        </Grid>
+      </Grid>
     </div>
   );
 }
